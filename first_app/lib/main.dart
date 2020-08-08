@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import './quiz.dart';
 import './result.dart';
+import './refresh.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,23 +18,47 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
+  var _totalScore = 0;
   final _questions = [
     {
       'question': 'What\'s your favorite color?',
-      'answers': ['Black', 'Red', 'Green', 'White'],
+      'answers': [
+        {'text': 'Black', 'score': 10},
+        {'text': 'Red', 'score': 5},
+        {'text': 'Green', 'score': 3},
+        {'text': 'White', 'score': 1}
+      ],
     },
     {
       'question': 'What\'s your favorite animal?',
-      'answers': ['Rabbit', 'Snake', 'Elefant', 'Lion'],
+      'answers': [
+        {'text': 'Rabbit', 'score': 10},
+        {'text': 'Snake', 'score': 5},
+        {'text': 'Elefant', 'score': 3},
+        {'text': 'Lion', 'score': 1}
+      ],
     },
     {
       'question': 'Who\'s your favorite teacher?',
-      'answers': ['Max', 'John', 'Dave', 'Marques'],
+      'answers': [
+        {'text': 'Max', 'score': 10},
+        {'text': 'John', 'score': 5},
+        {'text': 'Dave', 'score': 3},
+        {'text': 'Marques', 'score': 1}
+      ],
     },
   ];
 
-  void _answerQuestion() {
+  void _refresh() {
+    _totalScore = 0;
+    setState(() {
+      _questionIndex = 0;
+    });
+  }
+
+  void _answerQuestion(int score) {
     print(_questionIndex);
+    _totalScore += score;
     setState(() {
       _questionIndex++;
     });
@@ -51,7 +76,8 @@ class _MyAppState extends State<MyApp> {
                 questionIndex: _questionIndex,
                 questions: _questions,
               )
-            : Result(),
+            : Result(_totalScore),
+        floatingActionButton: Refresh(_refresh),
       ),
     );
   }
