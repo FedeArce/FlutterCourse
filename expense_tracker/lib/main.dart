@@ -1,8 +1,6 @@
-import 'package:expense_tracker/transactionCard.dart';
 import 'package:flutter/material.dart';
 
-import './transaction.dart';
-import './inputCard.dart';
+import 'widgets/bodyColumn.dart';
 
 void main() => runApp(MyApp());
 
@@ -17,21 +15,6 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  final List<Transaction> transactions = [
-    Transaction(
-      id: '1',
-      title: 'New Shoes',
-      amount: 99.99,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: '2',
-      title: 'Gorcery',
-      amount: 19.99,
-      date: DateTime.now(),
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,12 +33,7 @@ class MyHomePage extends StatelessWidget {
               elevation: 5,
             ),
           ),
-          InputCard(),
-          Column(
-            children: transactions.map((tx) {
-              return TransactionCard(tx);
-            }).toList(),
-          ),
+          BodyColumn(),
         ],
       ),
     );

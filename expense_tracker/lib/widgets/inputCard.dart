@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class InputCard extends StatelessWidget {
-  String titleInput;
-  String amountInput;
+  final titleContrller = TextEditingController();
+  final amountController = TextEditingController();
+  final Function addNewTransaction;
+
+  InputCard(this.addNewTransaction);
 
   @override
   Widget build(BuildContext context) {
@@ -17,21 +20,22 @@ class InputCard extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: 'Title',
               ),
-              onChanged: (val) {
-                titleInput = val;
-              },
+              controller: titleContrller,
             ),
             TextField(
               decoration: InputDecoration(
                 labelText: 'Amount',
               ),
-              onChanged: (val) {
-                amountInput = val;
-              },
+              controller: amountController,
             ),
             FlatButton(
               child: Text('Add Transaction'),
-              onPressed: () {},
+              onPressed: () {
+                addNewTransaction(
+                  titleContrller.text,
+                  double.parse(amountController.text),
+                );
+              },
               textColor: Colors.blue,
             )
           ],
