@@ -1,7 +1,8 @@
+import 'package:expense_tracker/widgets/weekChard.dart';
 import 'package:flutter/material.dart';
 
-import 'widgets/transactionColumn.dart';
-import 'widgets/inputCard.dart';
+import 'widgets/transactionList.dart';
+import 'widgets/inputTransaction.dart';
 import 'models/transaction.dart';
 
 void main() => runApp(MyApp());
@@ -43,19 +44,29 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransaction = [
-    Transaction(
-      id: DateTime.now().toString(),
-      title: 'New Shoes',
-      amount: 99.99,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: DateTime.now().toString(),
-      title: 'Gorcery',
-      amount: 19.99,
-      date: DateTime.now(),
-    ),
+    // Transaction(
+    //   id: DateTime.now().toString(),
+    //   title: 'New Shoes',
+    //   amount: 99.99,
+    //   date: DateTime.now(),
+    // ),
+    // Transaction(
+    //   id: DateTime.now().toString(),
+    //   title: 'Gorcery',
+    //   amount: 19.99,
+    //   date: DateTime.now(),
+    // ),
   ];
+
+  List<Transaction> get _recentTransaction {
+    return _userTransaction.where((tx) {
+      return tx.date.isAfter(DateTime.now().subtract(
+        Duration(
+          days: 7,
+        ),
+      ));
+    }).toList();
+  }
 
   void _addNewTransaction(String title, double amount) {
     final tx = Transaction(
@@ -88,7 +99,8 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            TransactionColumn(_userTransaction),
+            WeekChart(_recentTransaction),
+            TransactionList(_userTransaction),
           ],
         ),
       ),
