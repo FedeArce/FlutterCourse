@@ -58,6 +58,18 @@ class _MyHomePageState extends State<MyHomePage> {
       amount: 19.99,
       date: DateTime.now(),
     ),
+    Transaction(
+      id: DateTime.now().toString(),
+      title: 'New Shoes',
+      amount: 99.99,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: DateTime.now().toString(),
+      title: 'Gorcery',
+      amount: 19.99,
+      date: DateTime.now(),
+    ),
   ];
 
   List<Transaction> get _recentTransaction {
@@ -105,17 +117,30 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      title: Text('Personal Expense'),
+    );
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Personal Expense'),
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            WeekChart(_recentTransaction),
-            TransactionList(_orderedTransaction, _deleteTransaction),
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.25,
+              child: WeekChart(_recentTransaction),
+            ),
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.75,
+              child: TransactionList(_orderedTransaction, _deleteTransaction),
+            ),
           ],
         ),
       ),
