@@ -11,9 +11,12 @@ class DayChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        FittedBox(
-          child: Text(
-            '€${spendingAmount.toStringAsFixed(0)}',
+        Container(
+          height: 20,
+          child: FittedBox(
+            child: Text(
+              '€${spendingAmount.toStringAsFixed(0)}',
+            ),
           ),
         ),
         SizedBox(
@@ -23,6 +26,7 @@ class DayChart extends StatelessWidget {
           height: 60,
           width: 10,
           child: Stack(
+            alignment: Alignment.bottomCenter,
             children: <Widget>[
               Container(
                 decoration: BoxDecoration(

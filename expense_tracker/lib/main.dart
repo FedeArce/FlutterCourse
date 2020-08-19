@@ -13,8 +13,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Personal Expense',
       theme: ThemeData(
-          primarySwatch: Colors.red,
+          primarySwatch: Colors.orange,
           accentColor: Colors.orange,
+          errorColor: Colors.grey,
           fontFamily: 'Quicksand',
           textTheme: ThemeData.light().textTheme.copyWith(
                 headline6: TextStyle(
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
+                button: TextStyle(color: Colors.white),
               ),
           appBarTheme: AppBarTheme(
             textTheme: ThemeData.light().textTheme.copyWith(
@@ -44,35 +46,40 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransaction = [
-    // Transaction(
-    //   id: DateTime.now().toString(),
-    //   title: 'New Shoes',
-    //   amount: 99.99,
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   id: DateTime.now().toString(),
-    //   title: 'Gorcery',
-    //   amount: 19.99,
-    //   date: DateTime.now(),
-    // ),
+    Transaction(
+      id: DateTime.now().toString(),
+      title: 'New Shoes',
+      amount: 99.99,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: DateTime.now().toString(),
+      title: 'Gorcery',
+      amount: 19.99,
+      date: DateTime.now(),
+    ),
   ];
 
   List<Transaction> get _recentTransaction {
     return _userTransaction.where((tx) {
-      return tx.date.isAfter(DateTime.now().subtract(
-        Duration(
-          days: 7,
-        ),
-      ));
+      final today = DateTime.now();
+      bool weekTx =
+          tx.date.isAfter(today.subtract(Duration(days: today.weekday))) &&
+              tx.date.isBefore(today.add(Duration(days: 7 - today.weekday)));
+      return weekTx;
     }).toList();
   }
 
-  void _addNewTransaction(String title, double amount) {
+  List<Transaction> get _orderedTransaction {
+    _userTransaction.sort((a, b) => b.date.compareTo(a.date));
+    return _userTransaction;
+  }
+
+  void _addNewTransaction(String title, double amount, DateTime date) {
     final tx = Transaction(
       title: title,
       amount: amount,
-      date: DateTime.now(),
+      date: date,
       id: DateTime.now().toString(),
     );
     setState(() {
@@ -80,11 +87,19 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransaction.removeWhere((tx) {
+        return tx.id == id;
+      });
+    });
+  }
+
   void _startAddNewTransaction(BuildContext ctx) {
     showModalBottomSheet(
         context: ctx,
         builder: (_) {
-          return InputCard(_addNewTransaction);
+          return InputTransaction(_addNewTransaction);
         });
   }
 
@@ -100,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             WeekChart(_recentTransaction),
-            TransactionList(_userTransaction),
+            TransactionList(_orderedTransaction, _deleteTransaction),
           ],
         ),
       ),

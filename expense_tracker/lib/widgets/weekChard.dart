@@ -10,8 +10,10 @@ class WeekChart extends StatelessWidget {
   WeekChart(this.recentTransactions);
 
   List<Map<String, Object>> get gropedTransactionValues {
+    DateTime today = DateTime.now();
+    final firstWeekDay = today.subtract(new Duration(days: today.weekday - 1));
     return List.generate(7, (index) {
-      final weekDay = DateTime.now().subtract(Duration(days: index));
+      final weekDay = firstWeekDay.add(Duration(days: index));
       double total = 0.0;
 
       for (int i = 0; i < recentTransactions.length; i++) {
@@ -45,8 +47,7 @@ class WeekChart extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: gropedTransactionValues.map((data) {
-            return Flexible(
-              fit: FlexFit.tight,
+            return Expanded(
               child: DayChart(
                 data['day'],
                 data['amount'],
