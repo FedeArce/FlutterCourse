@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:expense_tracker/widgets/AdaptiveIconButton.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -44,57 +48,63 @@ class _InputTransactionState extends State<InputTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Title',
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 5,
+        child: Container(
+          padding: EdgeInsets.only(
+            top: 10,
+            left: 10,
+            right: 10,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              TextField(
+                decoration: InputDecoration(
+                  labelText: 'Title',
+                ),
+                controller: _titleContrller,
+                onSubmitted: (_) => _submitData(),
               ),
-              controller: _titleContrller,
-              onSubmitted: (_) => _submitData(),
-            ),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Amount',
+              TextField(
+                decoration: InputDecoration(
+                  labelText: 'Amount',
+                ),
+                controller: _amountController,
+                keyboardType: TextInputType.number,
+                onSubmitted: (_) => _submitData(),
               ),
-              controller: _amountController,
-              keyboardType: TextInputType.number,
-              onSubmitted: (_) => _submitData(),
-            ),
-            Container(
-              height: 70,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      _selectedDate != null
-                          ? DateFormat.yMd().format(_selectedDate)
-                          : 'No Date Chosen',
-                      style: TextStyle(color: Colors.grey[600]),
+              Container(
+                height: 70,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        _selectedDate != null
+                            ? DateFormat.yMd().format(_selectedDate)
+                            : 'No Date Chosen',
+                        style: TextStyle(color: Colors.grey[600]),
+                      ),
                     ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.calendar_today),
-                    onPressed: _presentDatePicker,
-                  )
-                ],
+                    AdaptiveIconButton(
+                      function: _presentDatePicker,
+                    )
+                  ],
+                ),
               ),
-            ),
-            RaisedButton(
-              child: Text(
-                'Add Transaction',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              onPressed: _submitData,
-              color: Theme.of(context).primaryColor,
-              textColor: Theme.of(context).textTheme.button.color,
-            )
-          ],
+              RaisedButton(
+                child: Text(
+                  'Add Transaction',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                onPressed: _submitData,
+                color: Theme.of(context).primaryColor,
+                textColor: Theme.of(context).textTheme.button.color,
+              )
+            ],
+          ),
         ),
       ),
     );
