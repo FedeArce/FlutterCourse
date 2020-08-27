@@ -172,7 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      'Show Chart',
+                      'Chart',
                       style: Theme.of(context).textTheme.headline6,
                     ),
                     Switch.adaptive(
